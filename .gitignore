@@ -1,0 +1,12 @@
+tmp
+bin
+build
+libs
+dist
+*.zip
+
+xcuserdata
+build.properties
+
+Thumbs.db
+.DS_Store
