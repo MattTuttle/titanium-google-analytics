@@ -8,7 +8,7 @@ var GA = require('analytics.google');
 GA.debug = true;
 //GA.trackUncaughtExceptions = true;
 
-var tracker = GA.getTracker("UA-5069201-9");
+var tracker = GA.getTracker("UA-XXXXXXX-X");
 tracker.trackEvent({
 	category: "category",
 	action: "test",

@@ -8,7 +8,7 @@ var GA = require('analytics.google');
 GA.debug = true;
 GA.trackUncaughtExceptions = true;
 
-var tracker = GA.getTracker("UA-5069201-8");
+var tracker = GA.getTracker("UA-XXXXXX-X");
 tracker.trackEvent({
 	category: "category",
 	action: "test",
@@ -28,17 +28,17 @@ tracker.trackTiming({
 });
 tracker.trackScreen("Home");
 
-var transaction = GA.getTransaction({
-	id: "hi"
+var transaction = GA.makeTransaction({
+	id: "hi",
+	tax: 0.6,
+	shipping: 0,
+	revenue: 24.99 * 0.7
 });
-transaction.tax = 0.6;
-transaction.shipping = 0;
-transaction.revenue = 24.99 * 0.7;
 transaction.addItem({
-	sku: "",
-	name: "",
-	category: "",
-	price: 24.99,
+	sku: "abc",
+	name: "ABC123",
+	category: "product",
+	price: 0.99,
 	quantity: 1
 });
 tracker.trackTransaction(transaction);

@@ -8,12 +8,11 @@
 
 #import "GAI.h"
 
-@interface AnalyticsGoogleTransactionProxy : TiProxy {
-    GAITransaction* transaction;
+@interface AnalyticsGoogleTransactionProxy : TiProxy{
+	GAITransaction *_transaction;
 }
 
+-(GAITransaction*)transaction;
 -(id)initWithArgs:(NSDictionary*)args;
-
-@property (nonatomic,readonly) GAITransaction* transaction;
 
 @end

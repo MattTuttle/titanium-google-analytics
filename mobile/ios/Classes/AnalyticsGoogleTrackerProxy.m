@@ -34,7 +34,6 @@
         if (![NSThread isMainThread])
         {
             TiThreadPerformOnMainThread(^{
-                NSLog(@"Tracking id: %@", trackingId);
                 tracker = [[GAI sharedInstance] trackerWithTrackingId:trackingId];
             }, NO);
         }
@@ -55,18 +54,18 @@
 {
     ENSURE_UI_THREAD_1_ARG(args);
     ENSURE_SINGLE_ARG(args, NSDictionary);
-    
+
     NSString *category;
     NSString *action;
     NSString *label;
     NSNumber *value;
-    
+
     ENSURE_ARG_OR_NIL_FOR_KEY(category, args, @"category", NSString);
     ENSURE_ARG_OR_NIL_FOR_KEY(action, args, @"action", NSString);
     ENSURE_ARG_OR_NIL_FOR_KEY(label, args, @"label", NSString);
     ENSURE_ARG_OR_NIL_FOR_KEY(value, args, @"value", NSNumber);
-    
-    [tracker trackEventWithCategory:category
+
+    [tracker sendEventWithCategory:category
                          withAction:action
                           withLabel:label
                           withValue:value];
@@ -76,16 +75,16 @@
 {
     ENSURE_UI_THREAD_1_ARG(args);
     ENSURE_SINGLE_ARG(args, NSDictionary);
-    
+
     NSString *network;
     NSString *action;
     NSString *target;
-    
+
     ENSURE_ARG_FOR_KEY(network, args, @"network", NSString);
     ENSURE_ARG_FOR_KEY(action, args, @"action", NSString);
     ENSURE_ARG_OR_NIL_FOR_KEY(target, args, @"target", NSString);
-    
-    [tracker trackSocial:network
+
+    [tracker sendSocial:network
               withAction:action
               withTarget:target];
 }
@@ -94,51 +93,51 @@
 {
     ENSURE_UI_THREAD_1_ARG(args);
     ENSURE_SINGLE_ARG(args, NSDictionary);
-    
+
     NSString *category;
     NSNumber *time;
     NSString *name;
     NSString *label;
-    
+
     ENSURE_ARG_FOR_KEY(category, args, @"category", NSString);
     ENSURE_ARG_OR_NIL_FOR_KEY(name, args, @"name", NSString);
     ENSURE_ARG_OR_NIL_FOR_KEY(label, args, @"label", NSString);
     ENSURE_ARG_FOR_KEY(time, args, @"time", NSNumber);
-    
-    [tracker trackTimingWithCategory:category
+
+    [tracker sendTimingWithCategory:category
                            withValue:[time doubleValue]
                             withName:name
                            withLabel:label];
 }
 
--(void)trackView:(id)value
+-(void)trackScreen:(id)value
 {
     ENSURE_UI_THREAD_1_ARG(value);
     ENSURE_SINGLE_ARG(value, NSString);
-    
-    [tracker trackView:value];
+
+    [tracker sendView:value];
 }
 
--(void)trackTransaction:(id)args
+-(void)trackTransaction:(id)value
 {
-    ENSURE_UI_THREAD_1_ARG(args);
-    ENSURE_SINGLE_ARG(args, AnalyticsGoogleTransactionProxy);
-    
-    AnalyticsGoogleTransactionProxy *proxy = args;
-    [tracker trackTransaction:proxy.transaction];
+    ENSURE_UI_THREAD_1_ARG(value);
+    ENSURE_SINGLE_ARG(value, AnalyticsGoogleTransactionProxy);
+
+    AnalyticsGoogleTransactionProxy *proxy = (AnalyticsGoogleTransactionProxy*)value;
+    [tracker sendTransaction: [proxy transaction]];
 }
 
 -(void)send:(id)args
 {
     ENSURE_UI_THREAD_1_ARG(args);
     ENSURE_SINGLE_ARG(args, NSDictionary);
-    
+
     NSString *trackType;
     NSDictionary *parameters;
-    
+
     ENSURE_ARG_FOR_KEY(trackType, args, @"trackType", NSString);
     ENSURE_ARG_FOR_KEY(parameters, args, @"parameters", NSDictionary);
-    
+
     [tracker send:trackType params:parameters];
 }
 
@@ -157,7 +156,7 @@
 {
     ENSURE_UI_THREAD_1_ARG(value);
     ENSURE_SINGLE_ARG(value, NSNumber);
-    
+
     tracker.anonymize = [value boolValue];
 }
 
@@ -165,7 +164,7 @@
 {
     ENSURE_UI_THREAD_1_ARG(value);
     ENSURE_SINGLE_ARG(value, NSNumber);
-    
+
     tracker.useHttps = [value boolValue];
 }
 
@@ -173,7 +172,7 @@
 {
     ENSURE_UI_THREAD_1_ARG(value);
     ENSURE_SINGLE_ARG(value, NSNumber);
-    
+
     tracker.sampleRate = [value doubleValue];
 }
 
