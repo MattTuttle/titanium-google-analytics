@@ -35,10 +35,10 @@ var transaction = GA.makeTransaction({
 	revenue: 24.99 * 0.7
 });
 transaction.addItem({
-	sku: "abc",
-	name: "ABC123",
-	category: "product",
-	price: 0.99,
+	sku: "ABC123",
+	name: "My Alphabet",
+	category: "product category",
+	price: 24.99,
 	quantity: 1
 });
 tracker.trackTransaction(transaction);
