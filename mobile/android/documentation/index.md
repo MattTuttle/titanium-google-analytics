@@ -4,6 +4,12 @@
 
 Connects to Google Analytics for app event tracking.
 
+## Set up Google Analytics
+
+First step: you have to create a new app property in your Google Analytics-account.
+
+For more information see: http://support.google.com/analytics/bin/answer.py?hl=en&answer=2587086&topic=2587085&ctx=topic
+
 ## Accessing the Analytics Module
 
 To access this module from JavaScript, you would do the following:
