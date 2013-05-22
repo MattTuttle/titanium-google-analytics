@@ -49,7 +49,7 @@
 
 -(int64_t)toMicros:(double)value
 {
-    return (int64_t) value * 1000000;
+    return (int64_t) (value * 1000000);
 }
 
 #pragma mark Public APIs
