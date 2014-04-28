@@ -8,7 +8,8 @@
  */
 package analytics.google;
 
-import com.google.analytics.tracking.android.Tracker;
+import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.analytics.HitBuilders;
 
 import org.appcelerator.kroll.KrollDict;
 import org.appcelerator.kroll.KrollProxy;
@@ -37,7 +38,6 @@ public class TrackerProxy extends KrollProxy
 	public TrackerProxy(Tracker t)
 	{
 		super();
-
 		tracker = t;
 	}
 
@@ -49,13 +49,22 @@ public class TrackerProxy extends KrollProxy
 		String action = TiConvert.toString(propsDict, "action");
 		String label = TiConvert.toString(propsDict, "label");
 		long value = TiConvert.toInt(propsDict, "value");
-		tracker.sendEvent(category, action, label, value);
+		
+		tracker.send(new HitBuilders.EventBuilder()
+			.setCategory(category)
+			.setAction(action)
+			.setLabel(label)
+			.setValue(value)
+			.build());
 	}
 
 	@Kroll.method
-	public void trackScreen(String screen)
+	public void trackScreen(String path)
 	{
-		tracker.sendView(screen);
+		tracker.setScreenName(path);
+		
+        tracker.send(new HitBuilders.AppViewBuilder()
+			.build());
 	}
 
 	@Kroll.method
@@ -66,7 +75,13 @@ public class TrackerProxy extends KrollProxy
 		String name = TiConvert.toString(propsDict, "name");
 		String label = TiConvert.toString(propsDict, "label");
 		long interval = TiConvert.toInt(propsDict, "time");
-		tracker.sendTiming(category, interval, name, label);
+		
+		tracker.send(new HitBuilders.TimingBuilder()
+			.setCategory(category)
+			.setValue(interval)
+			.setVariable(name)
+			.setLabel(label)
+			.build());
 	}
 
 	@Kroll.method
@@ -76,12 +91,11 @@ public class TrackerProxy extends KrollProxy
 		String network = TiConvert.toString(propsDict, "network");
 		String action = TiConvert.toString(propsDict, "action");
 		String target = TiConvert.toString(propsDict, "target");
-		tracker.sendSocial(network, action, target);
-	}
-
-	@Kroll.method
-	public void trackTransaction(TransactionProxy tp)
-	{
-		tracker.sendTransaction(tp.transaction);
+		
+		tracker.send(new HitBuilders.SocialBuilder()
+			.setNetwork(network)
+			.setAction(action)
+			.setTarget(target)
+			.build());
 	}
 }
