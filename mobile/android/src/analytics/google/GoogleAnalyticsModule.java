@@ -40,7 +40,7 @@ public class GoogleAnalyticsModule extends KrollModule
 	public GoogleAnalyticsModule()
 	{
 		super();
-
+		
 		TiApplication appContext = TiApplication.getInstance();
 		Activity activity = appContext.getCurrentActivity();
 		mInstance = GoogleAnalytics.getInstance(activity);
@@ -49,7 +49,7 @@ public class GoogleAnalyticsModule extends KrollModule
 	@Kroll.onAppCreate
 	public static void onAppCreate(TiApplication app)
 	{
-
+		
 	}
 
 	// Methods

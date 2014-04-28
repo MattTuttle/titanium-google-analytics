@@ -30,12 +30,7 @@ tracker.trackTiming({
 	label: ""
 });
 
-
-var button = Ti.UI.createButton({ title: "HOME", width: 200, height: 100, color: "#000" });
-button.add(win);
+tracker.trackScreen({ path: "Home", customDimension: { 1: "free" }});
 
 
-button.addEventListener("click", function() {
-	tracker.trackScreen("Home");
-	console.log("--------------- @@@")
-});
+

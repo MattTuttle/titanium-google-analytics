@@ -48,18 +48,6 @@ public class TrackerProxy extends KrollProxy
 	}
 
 	@Kroll.method
-	public void setCustomDimension(Integer index, String value)
-	{
-		tracker.setCustomDimension(index, value);
-	}
-
-	@Kroll.method
-	public void setCustomMetric(Integer index, Integer value)
-	{
-		tracker.setCustomMetric(index, value);
-	}
-
-	@Kroll.method
 	public void trackEvent(HashMap props)
 	{
 		KrollDict propsDict = new KrollDict(props);
@@ -68,21 +56,85 @@ public class TrackerProxy extends KrollProxy
 		String label = TiConvert.toString(propsDict, "label");
 		long value = TiConvert.toInt(propsDict, "value");
 		
-		tracker.send(new HitBuilders.EventBuilder()
+		HitBuilders.EventBuilder hitBuilder = new HitBuilders.EventBuilder()
 			.setCategory(category)
 			.setAction(action)
 			.setLabel(label)
-			.setValue(value)
-			.build());
+			.setValue(value);
+		
+		
+		// custom dimension
+		Object cd = propsDict.get("customDimension");
+		if (cd instanceof HashMap) {
+			HashMap dict = (HashMap) cd;
+			for (Object key : dict.keySet()) {
+				int idx = TiConvert.toInt(key);
+				String val = TiConvert.toString(dict.get(key));
+				
+				if (idx > 0) {
+					hitBuilder.setCustomDimension(idx, val);
+				}
+			}
+		}
+		
+		// custom metric
+		Object cm = propsDict.get("customMetric");
+		if (cm instanceof HashMap) {
+			HashMap dict = (HashMap) cm;
+			
+			for (Object key : dict.keySet()) {
+				int idx = TiConvert.toInt(key);
+				float val = TiConvert.toFloat(dict.get(key));
+				
+				if (idx > 0) {
+					hitBuilder.setCustomMetric(idx, val);
+				}
+			}
+		}
+		
+		tracker.send(hitBuilder.build());
 	}
 
 	@Kroll.method
-	public void trackScreen(String path)
+	public void trackScreen(HashMap props)
 	{
+		KrollDict propsDict = new KrollDict(props);
+		String path = TiConvert.toString(propsDict, "path");
+		
 		tracker.setScreenName(path);
 		
-        tracker.send(new HitBuilders.AppViewBuilder()
-			.build());
+		HitBuilders.AppViewBuilder hitBuilder = new HitBuilders.AppViewBuilder();
+		
+		// custom dimension
+		Object cd = propsDict.get("customDimension");
+		if (cd instanceof HashMap) {
+			HashMap dict = (HashMap) cd;
+			for (Object key : dict.keySet()) {
+				int idx = TiConvert.toInt(key);
+				String val = TiConvert.toString(dict.get(key));
+			
+				if (idx > 0) {
+					hitBuilder.setCustomDimension(idx, val);
+				}
+			}
+		}
+				
+		// custom metric
+		Object cm = propsDict.get("customMetric");
+		if (cm instanceof HashMap) {
+			HashMap dict = (HashMap) cm;
+		
+			for (Object key : dict.keySet()) {
+				int idx = TiConvert.toInt(key);
+				float val = TiConvert.toFloat(dict.get(key));
+			
+				if (idx > 0) {
+					hitBuilder.setCustomMetric(idx, val);
+				}
+			}
+		}
+		
+		tracker.send(hitBuilder.build());
 	}
 
 	@Kroll.method
@@ -94,12 +146,44 @@ public class TrackerProxy extends KrollProxy
 		String label = TiConvert.toString(propsDict, "label");
 		long interval = TiConvert.toInt(propsDict, "time");
 		
-		tracker.send(new HitBuilders.TimingBuilder()
+		
+		HitBuilders.TimingBuilder hitBuilder = new HitBuilders.TimingBuilder()
 			.setCategory(category)
 			.setValue(interval)
 			.setVariable(name)
-			.setLabel(label)
-			.build());
+			.setLabel(label);
+		
+		
+		// custom dimension
+		Object cd = propsDict.get("customDimension");
+		if (cd instanceof HashMap) {
+			HashMap dict = (HashMap) cd;
+			for (Object key : dict.keySet()) {
+				int idx = TiConvert.toInt(key);
+				String val = TiConvert.toString(dict.get(key));
+				
+				if (idx > 0) {
+					hitBuilder.setCustomDimension(idx, val);
+				}
+			}
+		}
+		
+		// custom metric
+		Object cm = propsDict.get("customMetric");
+		if (cm instanceof HashMap) {
+			HashMap dict = (HashMap) cm;
+			
+			for (Object key : dict.keySet()) {
+				int idx = TiConvert.toInt(key);
+				float val = TiConvert.toFloat(dict.get(key));
+				
+				if (idx > 0) {
+					hitBuilder.setCustomMetric(idx, val);
+				}
+			}
+		}
+		
+		tracker.send(hitBuilder.build());
 	}
 
 	@Kroll.method
@@ -110,10 +194,42 @@ public class TrackerProxy extends KrollProxy
 		String action = TiConvert.toString(propsDict, "action");
 		String target = TiConvert.toString(propsDict, "target");
 		
-		tracker.send(new HitBuilders.SocialBuilder()
+		
+		HitBuilders.SocialBuilder hitBuilder = new HitBuilders.SocialBuilder()
 			.setNetwork(network)
 			.setAction(action)
-			.setTarget(target)
-			.build());
+			.setTarget(target);
+		
+		
+		// custom dimension
+		Object cd = propsDict.get("customDimension");
+		if (cd instanceof HashMap) {
+			HashMap dict = (HashMap) cd;
+			for (Object key : dict.keySet()) {
+				int idx = TiConvert.toInt(key);
+				String val = TiConvert.toString(dict.get(key));
+				
+				if (idx > 0) {
+					hitBuilder.setCustomDimension(idx, val);
+				}
+			}
+		}
+		
+		// custom metric
+		Object cm = propsDict.get("customMetric");
+		if (cm instanceof HashMap) {
+			HashMap dict = (HashMap) cm;
+			
+			for (Object key : dict.keySet()) {
+				int idx = TiConvert.toInt(key);
+				float val = TiConvert.toFloat(dict.get(key));
+				
+				if (idx > 0) {
+					hitBuilder.setCustomMetric(idx, val);
+				}
+			}
+		}
+		
+		tracker.send(hitBuilder.build());
 	}
 }
