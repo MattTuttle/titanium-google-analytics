@@ -42,6 +42,12 @@ public class TrackerProxy extends KrollProxy
 	}
 
 	@Kroll.method
+	public void setScreenName(String path)
+	{
+		tracker.setScreenName(path);
+	}
+
+	@Kroll.method
 	public void trackEvent(HashMap props)
 	{
 		KrollDict propsDict = new KrollDict(props);
