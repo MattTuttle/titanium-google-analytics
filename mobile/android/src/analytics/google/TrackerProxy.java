@@ -48,6 +48,18 @@ public class TrackerProxy extends KrollProxy
 	}
 
 	@Kroll.method
+	public void setCustomDimension(Integer index, String value)
+	{
+		tracker.setCustomDimension(index, value);
+	}
+
+	@Kroll.method
+	public void setCustomMetric(Integer index, Integer value)
+	{
+		tracker.setCustomMetric(index, value);
+	}
+
+	@Kroll.method
 	public void trackEvent(HashMap props)
 	{
 		KrollDict propsDict = new KrollDict(props);
