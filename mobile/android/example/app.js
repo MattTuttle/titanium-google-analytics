@@ -4,41 +4,33 @@ var win = Ti.UI.createWindow({
 win.open();
 
 var GA = require('analytics.google');
-//GA.optOut = true;
-GA.debug = true;
-//GA.trackUncaughtExceptions = true;
+// GA.setDryRun(true);
+GA.localDispatchPeriod = 10;
 
-var tracker = GA.getTracker("UA-XXXXXXX-X");
+
+var tracker = GA.getTracker("UA-50445546-1");
+
 tracker.trackEvent({
 	category: "category",
 	action: "test",
 	label: "label",
 	value: 1
 });
+
 tracker.trackSocial({
 	network: "facebook",
 	action: "action",
 	target: "target"
 });
+
 tracker.trackTiming({
 	category: "",
 	time: 10,
 	name: "",
 	label: ""
 });
-tracker.trackScreen("Home");
 
-var transaction = GA.makeTransaction({
-	id: "hi",
-	tax: 0.6,
-	shipping: 0,
-	revenue: 24.99 * 0.7
-});
-transaction.addItem({
-	sku: "ABC123",
-	name: "My Alphabet",
-	category: "product category",
-	price: 24.99,
-	quantity: 1
-});
-tracker.trackTransaction(transaction);
+tracker.trackScreen({ path: "Home", customDimension: { 1: "free" }});
+
+
+

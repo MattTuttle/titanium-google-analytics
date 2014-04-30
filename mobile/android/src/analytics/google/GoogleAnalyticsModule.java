@@ -10,9 +10,8 @@ package analytics.google;
 
 import android.app.Activity;
 
-import com.google.analytics.tracking.android.GAServiceManager;
-import com.google.analytics.tracking.android.GoogleAnalytics;
-import com.google.analytics.tracking.android.Tracker;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 
 import org.appcelerator.kroll.KrollDict;
 import org.appcelerator.kroll.KrollModule;
@@ -41,7 +40,7 @@ public class GoogleAnalyticsModule extends KrollModule
 	public GoogleAnalyticsModule()
 	{
 		super();
-
+		
 		TiApplication appContext = TiApplication.getInstance();
 		Activity activity = appContext.getCurrentActivity();
 		mInstance = GoogleAnalytics.getInstance(activity);
@@ -50,26 +49,20 @@ public class GoogleAnalyticsModule extends KrollModule
 	@Kroll.onAppCreate
 	public static void onAppCreate(TiApplication app)
 	{
-
+		
 	}
 
 	// Methods
 	@Kroll.method
 	public TrackerProxy getTracker(String trackingID)
 	{
-		return new TrackerProxy(mInstance.getTracker(trackingID));
-	}
-
-	@Kroll.getProperty
-	public TrackerProxy getDefaultTracker()
-	{
-		return new TrackerProxy(mInstance.getDefaultTracker());
+		return new TrackerProxy(mInstance.newTracker(trackingID));
 	}
 
 	@Kroll.setProperty
-	public void setDispatchInterval(int interval)
+	public void setLocalDispatchPeriod(int interval)
 	{
-		GAServiceManager.getInstance().setDispatchPeriod(interval);
+		mInstance.setLocalDispatchPeriod(interval);
 	}
 
 	@Kroll.setProperty
@@ -79,23 +72,9 @@ public class GoogleAnalyticsModule extends KrollModule
 	}
 
 	@Kroll.setProperty
-	public void setDebug(boolean debug)
+	public void setDryRun(boolean debug)
 	{
-		mInstance.setDebug(debug);
+		mInstance.setDryRun(debug);
 	}
-
-	@Kroll.method
-	public TransactionProxy makeTransaction(HashMap props)
-	{
-		KrollDict propsDict = new KrollDict(props);
-		float orderTotal = TiConvert.toFloat(propsDict, "revenue");
-		float shippingCost = TiConvert.toFloat(propsDict, "shipping");
-		float tax = TiConvert.toFloat(propsDict, "tax");
-		String transactionId = TiConvert.toString(propsDict, "id");
-		String affiliation = TiConvert.toString(propsDict, "affiliation");
-
-		return new TransactionProxy(transactionId, orderTotal, tax, shippingCost, affiliation);
-	}
-
 }
 
