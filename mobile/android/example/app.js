@@ -17,6 +17,12 @@ tracker.trackEvent({
 	value: 1
 });
 
+tracker.trackEvent({
+	category: "category",
+	action: "test",
+	label: "label"
+});
+
 tracker.trackSocial({
 	network: "facebook",
 	action: "action",
